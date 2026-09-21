@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ichtus Gent - Schild Unlocker</title>
+  <style>
+    body, html { 
+      margin: 0; padding: 0; 
+      width: 100vw; height: 100vh; 
+      background-color: black; 
+      display: flex; justify-content: center; align-items: center; 
+      overflow: hidden; user-select: none;
+    }
+    
+    .canvas { 
+      position: relative; 
+      width: 100%; 
+      height: 100%; 
+    }
+    
+    .layer { 
+      position: absolute; top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      object-fit: contain; 
+      transition: opacity 0.5s ease-in-out; 
+    }
+    
+    .base-layer { z-index: 10; }
+    
+    .color-layer { 
+      z-index: 20; 
+      opacity: 0; 
+      mix-blend-mode: screen; 
+    }
+    
+    .click-zone { position: absolute; cursor: pointer; z-index: 50; }
+    
+    .zone-tl { top: 20%; left: 34%; width: 16%; height: 30%; } 
+    .zone-tr { top: 20%; left: 50%; width: 16%; height: 30%; } 
+    .zone-bl { top: 50%; left: 34%; width: 16%; height: 26%; } 
+    .zone-br { top: 50%; left: 50%; width: 16%; height: 26%; } 
+    
+    .zone-center { 
+      top: 43%; 
+      left: 46.5%; 
+      width: 7%; 
+      height: 14%; 
+      z-index: 60; 
+      clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="canvas">
+    <img src="Ichtus_Crest_Empty.WEBP" class="layer base-layer" alt="Leeg schild">
+    
+    <img src="Ichtus_Crest_Bible.WEBP" id="c-bijbel" class="layer color-layer" alt="Bijbel">
+    <img src="Ichtus_Crest_Alpha.WEBP" id="c-alpha" class="layer color-layer" alt="Alpha">
+    <img src="Ichtus_Crest_Omega.WEBP" id="c-omega" class="layer color-layer" alt="Omega">
+    <img src="Ichtus_Crest_Door.WEBP" id="c-deur" class="layer color-layer" alt="Deur">
+    <img src="Ichtus_Crest_Fish.WEBP" id="c-vis" class="layer color-layer" alt="Vis">
+    
+    <img src="Ichtus_Crest_Banner.WEBP" id="c-banner" class="layer color-layer" alt="Banner">
+    
+    <div class="click-zone zone-tl" onclick="toggleLayer('c-bijbel')" title="Bijbel"></div>
+    <div class="click-zone zone-tr" onclick="toggleLayer('c-alpha')" title="Alpha"></div>
+    <div class="click-zone zone-bl" onclick="toggleLayer('c-omega')" title="Omega"></div>
+    <div class="click-zone zone-br" onclick="toggleLayer('c-deur')" title="Deur"></div>
+    <div class="click-zone zone-center" onclick="toggleLayer('c-vis')" title="Vis"></div>
+  </div>
+  
+  <script>
+    function toggleLayer(layerId) {
+      const el = document.getElementById(layerId);
+      el.style.opacity = el.style.opacity === '1' ? '0' : '1';
+      
+      checkBanner();
+    }
+
+    function checkBanner() {
+      const bijbel = document.getElementById('c-bijbel').style.opacity === '1';
+      const alpha = document.getElementById('c-alpha').style.opacity === '1';
+      const omega = document.getElementById('c-omega').style.opacity === '1';
+      const deur = document.getElementById('c-deur').style.opacity === '1';
+      const vis = document.getElementById('c-vis').style.opacity === '1';
+      
+      const banner = document.getElementById('c-banner');
+      
+      if (bijbel && alpha && omega && deur && vis) {
+        banner.style.opacity = '1';
+      } else {
+        banner.style.opacity = '0';
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key.toLowerCase() === 'r') {
+        document.querySelectorAll('.color-layer').forEach(function(el) {
+          el.style.opacity = '0';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
